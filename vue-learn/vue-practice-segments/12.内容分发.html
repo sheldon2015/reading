@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>vue 把父组件的内容插入到子组件的模版中</title>
+
+    </head>
+
+    <!-- TODO 注意区分组件和元素 -->
+
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+            //将父组件的内容插入到子组建中 在子组件中添加    slot插槽，提供用于父组件提供的内容 运用作用域卡槽，可以在子组件中，向父组件注入参数
+            Vue.component('test1', {template: `
+              <div>
+                  <p>test1</p>
+              </div>
+                     `})
+            Vue.component('test2', {template: `
+              <div>
+                  <p>test2</p>
+                  <slot text='text 11111111'></slot>
+              </div>
+                 `})
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {
+                    handleClick(e) {
+                        this.test++;
+                    }
+                },
+                data() {
+                    return {test: 1}
+                },
+                template: `
+                 <div>
+                     <p>test:</p>
+                     <p ref='test'>{{test}}</p>
+                     <a href="javadcript:void" @click='handleClick'>点击按钮</a>
+                     <test1>11111111111111</test1>
+                     <test2>
+                        <div  slot-scope='props'> {{props.text}}</div>
+                     </test2>
+                </div>
+                                `
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>组件传值</title>
+    </head>
+    <!--TODO is属性 -->
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+            Vue.component('test', {
+                props: ['text'],
+                methods: {
+                    now() {
+                        return Date.now();
+                    }
+                },
+                data: function () {
+                    return {a: 1}
+                },
+                template: `
+                  <p  @click='a++'>
+                  {{text}}
+                  {{now()}}
+                  <br />
+                  {{a}}
+                  </p>
+                   `
+            });
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {
+                    clickHandle(e) {
+                        this.a++;
+                    }
+                },
+                data() {
+                    return {
+                        a: 1,
+                        b: {
+                            text: 'from   parent b object'
+                        }
+                    }
+                },
+                // 区分表达式和字符串
+                template: `
+                <div>
+                     {{b}}
+                     <br />
+                     {{b.text}}
+
+                     <hr />
+                    <test :text='a'></test>
+                    <test  text='a'></test>
+                    <test :text='b'></test>
+                    <button  @click='clickHandle'>click</button>
+                </div>
+                `
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>组件监听自定义事件 (v-model)</title>
+        <style>
+
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+
+            // TODO  模版中的作用域为当前vue实例的数据作用域中，这里定义了一个沙箱 构造器 时刻记住  :组件和原生元素是有区别的 v-model 应用到组件上
+
+            Vue.component('currency-input', {
+                template: '\
+                    <span>\
+                      $\
+                          <input\
+                          ref="input"\
+                          v-bind:value="value"\
+                          v-on:input="updateValue($event.target.value)"' +
+                        '\
+                          >\
+                    </span>\
+                  ',
+                props: ['value'],
+                methods: {
+                    // 不是直接更新值，而是使用此方法来对输入值进行格式化和位数限制
+                    updateValue: function (value) {
+                        var formattedValue = value
+                        // 删除两侧的空格符
+                            .trim()
+                        // 保留 2 位小数
+                            .slice(
+                                0,
+                                value.indexOf('.') === -1
+                                    ? value.length
+                                    : value.indexOf('.') + 3
+                            )
+                        // 如果值尚不合规，则手动覆盖为合规的值
+                        if (formattedValue !== value) {
+                            this.$refs.input.value = formattedValue
+                        }
+                        // 通过 input 事件带出数值
+                        this.$emit('input', Number(formattedValue))
+                    }
+                }
+            })
+
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {},
+
+                mounted() {
+                    console.log('  this.$refs.list', this.$refs.list);
+                },
+
+                updated() {
+                    console.log(' aaaaaaaaaaa this.$refs.list', this.$refs.list);
+
+                },
+                data() {
+                    return {
+                        checked: false,
+                        checked1: [],
+                        picked: '',
+                        selected: 'mmmmmmm',
+                        age: '',
+                        price: 111111111111,
+                        list: [
+                            1, 2, 3, 4, 5
+                        ],
+                        message: 1111111111111111
+                    }
+                },
+                //TODO 取值  和 取布尔值 可以将input事件通过lazy修饰符转change事件
+                template: `
+                <div>
+                   <input type="checkbox" id="checkbox" v-model="checked"  value='1'>
+                   <label for="checkbox">{{ checked }}</label>
+                   <hr />
+                   <input type="checkbox" id="checkbox1" v-model="checked1"  value='2'>
+                   <label for="checkbox">{{ checked1 }}</label>
+                   <hr />
+
+                   <input type="radio" id="one" value="One" v-model="picked">
+                   <label for="one">One</label>
+                   <br>
+                   <input type="radio" id="two" value="Two" v-model="picked">
+                   <label for="two">Two</label>
+                   <br>
+                   <span>Picked: {{ picked }}</span>
+
+                   <hr />
+                   <input v-model.number="age" >
+                   {{age}}
+                   <hr />
+                   <div id="example-5">
+                    <select v-model="selected">
+                      <option value="">请选择</option>
+                      <option>A</option>
+                      <option>B</option>
+                      <option>C</option>
+                    </select>
+                    <span>Selected: {{ selected }}</span>
+                      </div>
+
+                    <hr />
+
+                    <currency-input v-model="price"></currency-input>
+
+                    <input type="radio"    checked     />
+
+                    <div  v-for='i in  list'  ref='list'  >
+                        <span>{{i}}</span>
+                    </div>
+                    <button @click='list.push(111)'>click</button>
+
+                      <div v-cloak v-pre>
+                      {{ message }}
+                      </div>
+
+                      <hr />
+
+                          <currency-input inline-template  value='ssssssssssssssss'>
+                                  <div>
+                                        <p>{{value}}</p>
+                                        <p>{{value}}</p>
+                                        <p>{{value}}</p>
+                                        <p>{{value}}</p>
+                                        <p>{{value}}</p>
+                                        <p>{{value}}</p>
+                                        <p>{{value}}</p>
+                                  </div>
+
+
+
+                          </currency-input>
+
+
+
+
+                </div>
+                `
+            });
+        </script>
+    </body>
+
+</html>

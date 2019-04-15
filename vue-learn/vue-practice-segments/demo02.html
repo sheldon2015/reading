@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue hello world</title>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src='./vue.js'></script>
+    <script>
+        //局部注册组件
+
+        let child = {
+            template: "<div>aaaaaaa</div>"
+        };
+        var vm = new Vue({
+            components: {
+                "my-component": child
+            },
+            data: {
+                number: 1
+            },
+
+            methods: {
+                greet() {
+                    alert(this.number);
+                }
+            },
+
+            template: `
+                <div>
+                    <my-component/>
+                    <ul  >
+                    <li  v-for='item   of  10'>{{item}}</li>
+                    </ul>
+                    <button @click='number += 1' >{{number}}</button>
+                    <button @click.ctrl='greet' >{{number}}</button>
+
+                    <select><sss>sssss</sss></select>
+                    <select>
+                        <my-component/>
+                     </select>
+                </div>
+            `
+        });
+        vm.$mount(document.querySelector("#container"));
+    </script>
+
+
+
+
+
+</body>
+
+</html>

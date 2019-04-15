@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>组件传值</title>
+    </head>
+    <!--TODO is属性 -->
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {
+                    clickHandle(e) {
+                        this.a++;
+                    }
+                },
+                data() {
+
+                    return {a: 1}
+                },
+                // 区分表达式和字符串
+                template: `
+                <div>
+                     {{a}}
+                     <br />
+                     {{a+10}}
+                    <button  @click='clickHandle'>click</button>
+                </div>
+                `
+            });
+        </script>
+    </body>
+
+</html>

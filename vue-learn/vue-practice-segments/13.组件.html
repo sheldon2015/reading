@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>运用is属性</title>
+
+    </head>
+
+    <!--TODO is属性 -->
+
+    <body>
+        <script src='./vue.js'></script>
+        <table id="mount-point">
+            <tr is='test2'></tr>
+        </table>
+        <script>
+
+            Vue.component('test2', {template: `
+              <tr>
+                  <td>test2</td>
+                  <td>test2</td>
+                  <td>test2</td>
+              </tr>
+                 `})
+            //构造器
+            var vm = new Vue({el: "#mount-point"});
+        </script>
+    </body>
+
+</html>

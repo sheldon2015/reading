@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件内容分发</title>
+</head>
+
+<body>
+
+    <script src='./vue.js'></script>
+    <div id="container">
+        <my-define>
+            <div>slot content</div>
+            <div>slot content</div>
+            <div>slot content</div>
+            <div slot='slot1'>slot contentx</div>
+            <div slot='slot2'>slot contenty</div>
+            <template slot='slot3' scope='props'>
+                <span>{{props.text}}</span>
+            </template>
+            <div>slot content</div>
+            <div>slot content</div>
+        </my-define>
+        <hr>
+        <component :is='currentView'>11111111111111111</component>
+    </div>
+    <script>
+        //注册组建,扩展了html元素
+        Vue.component('my-define', {
+            template: '\
+                        <div>\
+                            <div>aaaaaaa</div>\
+                            <slot name="slot2">\
+                               只有在没有要分发的内容时才会显示3。\
+                            </slot>\
+                            <slot >\
+                               只有在没有要分发的内容时才会显示3。\
+                            </slot>\
+                            <slot name="slot3"   text="ssssssss" >\
+                               只有在没有要分发的内容时才会显示3。\
+                            </slot>\
+                        </div>\
+                       '
+        })
+        //创建根实例
+        var vm = new Vue({
+            el: '#container',
+            data: {
+                currentView: 'my-define'
+            }
+
+        })
+    </script>
+</body>
+
+</html>

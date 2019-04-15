@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue hello world</title>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="./vue.js"></script>
+    <script>
+        Vue.component("de", {
+            data() {
+                return {
+                    aaa: true
+                };
+            },
+            template: `
+                <div>
+                     <div  v-show='aaa' >{{test()}}</div>
+                    <a href='javascript:void(0)' @click='click'>click button</a>
+                    <hr>
+                    <ul  v-for='item in  10'>
+                        <template>
+                            <li>{{item}}</li>
+                            <li>{{item}}</li>
+                        </template>
+                    </ul>
+                    <ul  v-for='item of 10'>
+                        <template>
+                            <li>test{{item}}</li>
+                        </template>
+                   </ul>
+                </div>
+           `,
+            methods: {
+                click() {
+                    this.aaa = !this.aaa;
+                },
+                test() {
+                    console.log("de   ");
+                    return `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`;
+                }
+            }
+        });
+        var vm = new Vue({
+            data: {
+                hi: '<div    id="hi">ssssssssss</div>',
+                message: "a",
+                input: "ywz",
+                isActive: true,
+                activeClass: {
+                    active: true
+                },
+                red: "red",
+                transform: [
+                    "-webkit-translateZ(100px)", ,
+                    "translateZ(100px)",
+                    "-moz-translateZ(100px)",
+                    "-ms-translateZ(100px)",
+                    "-o-translateZ(100px)"
+                ],
+
+                aaa: true,
+                number: 11
+            },
+            //监听属性变化
+            watch: {
+                message(newValue) {
+                    console.log("newValue ", newValue);
+                }
+            },
+            //计算属性
+            computed: {
+                // reversedMessage() {
+                //     console.log('computed');
+                //     return this.message.split('').reverse().join('');
+                // }
+                reversedMessage: {
+                    get() {
+                        console.log("get");
+                        return this.message;
+                    },
+                    set(newValue) {
+                        //不能在自定义的set里面直接修改计算属性
+                        this.message = newValue;
+                    }
+                },
+                test: {
+                    get() {
+                        console.log("test");
+                        return this.hi;
+                    }
+                }
+            },
+            methods: {
+                click(e) {
+                    console.log(e);
+                },
+                reversedMessage2: function () {
+                    console.log("methods");
+                    return this.message;
+                },
+                toggle() {
+                    this.aaa = !this.aaa;
+                }
+            },
+            //过滤器
+            filters: {
+                capitalize(arg) {
+                    return arg.toUpperCase();
+                }
+            },
+            //钩子函数
+            created() {
+                console.log("create");
+            },
+
+            mounted() {
+                // setInterval(() => {
+                //     this.number++
+                // }, 100)
+            },
+            //模版
+            template: `
+                <div>
+
+                    <div   :style= '{color:"red" ,paddingLeft:number + "px" }' > xxxxx</div>
+                     <div  style='     "color":   message | capitalize === "A"  ?   "red" : "black"    '    v-bind:title='message | capitalize()  ===  "A" ?  "red":"green"' id="test">{{ hi | capitalize}}</div>
+                     <hr>
+                     <div   :class='{active:isActive}'>{{message}}</div>
+                     <div   :class='[{active:isActive}]' >{{reversedMessage}}</div>
+                     <div   :style='{color:red ,transform:transform,  background:"red"}'   :class='activeClass'>{{reversedMessage2()}}</div>
+                     <hr>
+                     <div v-once v-html='hi'></div>
+                     <label  :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"  >输入:</label>
+                     <input  v-model='input'>
+                     <div>{{input}}</div>
+                     <a href='javascript:void(0)' @click='click'>click button</a>
+                     <a href='javascript:void(0)' v-on:click='click'>click button 2</a>
+                     <hr>
+                     <div  v-if='aaa'>AAA</div>
+                     <div  v-else>BBB</div>
+                     <a href='javascript:void(0)' @click='toggle'>click toggle</a>
+                     <template  v-if='aaa'>
+                        <label>aaa:</label>
+                        <input  placeholder='aaaaa'>
+                     </template>
+
+                     <template  v-else>
+                         <label>bbb:</label>
+                         <input  placeholder='bbbbb'>
+                     </template>
+                    <div  v-show='aaa'>
+                        <label>aaa:</label>
+                        <input  placeholder='cccccc'>
+                     </div>
+                    <hr>
+
+                    <de>sssssss</de>
+                </div>
+            `
+        });
+        vm.$mount(document.querySelector("#container"));
+        console.log(vm);
+        console.log(vm.$data);
+        console.log(vm.hi);
+    </script>
+</body>
+
+</html>

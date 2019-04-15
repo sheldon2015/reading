@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>calendar</title>
+</head>
+
+<body>
+    <div id='container'>
+    </div>
+    <script type="text/javascript">
+        // 给定年月获取当月天数
+        function GetMDay(y, m) {
+
+            var mday = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+
+            if ((y % 4 == 0 && y % 100 != 0) || y % 400 == 0) //判断是否是闰月
+
+                mday[1] = 29;
+
+            return mday[m - 1];
+
+        }
+
+        // 获取星期数
+
+        function WeekNumber(y, m, d) {
+
+            var wk;
+
+            if (m <= 12 && m >= 1) {
+
+                for (var i = 1; i < m; ++i) {
+
+                    d += GetMDay(y, i);
+
+                }
+
+            }
+
+            /*根据日期计算星期的公式*/
+
+            wk = (y - 1 + (y - 1) / 4 - (y - 1) / 100 + (y - 1) / 400 + d) % 7;
+
+            //0对应星期天，1对应星期一
+
+            return parseInt(wk);
+
+        }
+
+        function SetCalendar(year, month) {
+
+            var daynumber = GetMDay(year, month); //当月天数
+            console.log("当月天数  " + daynumber);
+            var firstnumber = WeekNumber(year, month, 1); //当月第一天星期
+            console.log("当月第一天星期   " + firstnumber);
+            var lastnumber = WeekNumber(year, month, daynumber); //当月最后一天星期
+            console.log("当月最后一天星期   " + lastnumber);
+            var weeknumber = (daynumber - (7 - firstnumber) - (lastnumber + 1)) / 7; //除去第一个星期和最后一个星期的周数
+            console.log("除去第一个星期和最后一个星期的周数 " + weeknumber);
+            var day = 1;
+
+            var name;
+
+            var calendar = "";
+
+            calendar += "<table border=\"0\" cellspacing=\"1\" style=\"background-color:#a0c6e5\">";
+
+            calendar += "<tr>";
+
+            calendar += "<td>星期天</td>";
+
+            calendar += "<td>星期一</td>";
+
+            calendar += "<td>星期二</td>";
+
+            calendar += "<td>星期三</td>";
+
+            calendar += "<td>星期四</td>";
+
+            calendar += "<td>星期五</td>";
+
+            calendar += "<td>星期六</td>";
+
+            calendar += "</tr>";
+
+            calendar += "<tr>";
+
+            var i = 0;
+
+            for (i = 0; i < firstnumber; i++) //第一个星期
+
+            {
+
+                calendar += "<td></td>";
+
+            }
+
+            for (i = firstnumber; i < 7; i++) {
+
+                name = year + "-" + month + "-" + day;
+
+                calendar += "<td id=\"" + name + "\">" + day + "</td>";
+
+                day++;
+
+            }
+
+            calendar += "</tr>";
+
+            var number = 0; //星期数，末尾添加空行用，统一样式。
+
+            for (i = 0; i < weeknumber; i++) //其他星期
+
+            {
+
+                calendar += "<tr>";
+
+                for (var k = daynumber - (7 - firstnumber) - (weeknumber - 1) * 7; k < daynumber - (7 - firstnumber) - (weeknumber - 1) * 7 + 7; k++) {
+
+                    name = year + "-" + month + "-" + day;
+
+                    calendar += "<td id=\"" + name + "\">" + day + "</td>";
+
+                    day++;
+
+                }
+
+                calendar += "</tr>";
+
+                number++;
+
+            }
+
+            calendar += "<tr>";
+
+            for (i = 0; i < lastnumber + 1; i++) //最后一个星期
+
+            {
+
+                name = year + "-" + month + "-" + day;
+
+                calendar += "<td id=\"" + name + "\">" + day + "</td>";
+
+                day++;
+
+            }
+
+            for (i = lastnumber + 1; i < 7; i++) {
+
+                calendar += "<td>";
+
+                calendar += "</td>";
+
+            }
+
+            calendar += "</tr>";
+
+            if (number == 3) {
+
+                calendar += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+
+            }
+
+            calendar += "</table>";
+
+            return calendar;
+
+        }
+
+        document.body.querySelector('#container').innerHTML = SetCalendar(2018, 9)
+    </script>
+
+
+</body>
+
+</html>

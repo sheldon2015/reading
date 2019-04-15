@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>非父子组建通信(运用event bus)</title>
+</head>
+
+<body>
+    <script src="./vue.js">
+    </script>
+    <div id="mount-point">
+    </div>
+    <div id="mount-point2">
+    </div>
+    <script>
+
+        var bus = new Vue()
+        //构造器
+        var vm = new Vue({
+            el: "#mount-point",
+            data: function () {
+                return {
+                    name: ["Walter", "yao"]
+                };
+            },
+            methods: {
+                handleClick: function () {
+                    console.log(1);
+                    bus.$emit('test', 1)
+
+                }
+            },
+            template: `
+            <div>
+                    <p>
+                    {{name[0]}}
+                    <br />
+                    {{name[1]}}
+                    </p>
+                   <button @click='handleClick'>click</button>
+            </div>
+            `
+        });
+        var vm = new Vue({
+            el: "#mount-point2",
+            data: function () {
+                return {
+                    name: ["Walter2", "yao2"]
+
+                };
+            },
+            methods: {
+                handleClick: function () {
+                    console.log(2);
+
+                    bus.$on('test', function (id) {
+                        alert(id)
+                    })
+
+                }
+            },
+            template: `
+            <div>
+                   <p>
+                    {{name[0]}}
+                    <br />
+                    {{name[1]}}
+                    </p>
+                   <button  @click='handleClick'>click</button>
+            </div>
+            `
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<ul class="posts">
+    {% for post in posts %}
+    <li class="post">
+        <div class="post-thumbnail">
+            <a href="{{ url_for('.user', id=post.id , username=post.author.username) }}">
+                <img class="img-circle mt10" src="{{ post.author.gravatar(size=40) }}">
+            </a>
+        </div>
+        <div class="post-content ">
+            <div class="post-title h3">
+                <a href="{{ url_for('.post', id=post.id) }}">{{ post.title}}</a>
+            </div>
+            <div class="post-body">
+                {% if post.body_html %}
+                {{ post.body_html | safe | striptags | truncate(200, True) }}
+                {% else %}
+                {{ post.body | truncate(200, True) }}
+                {% endif %}
+            </div>
+            <div class="post-footer mt10">
+                {% if current_user == post.author %}
+                <a href="{{ url_for('main.edit', id=post.id) }}">
+                    <span class="label label-info">编辑</span>
+                </a>
+                {% else %}
+                {# 根据用户名字查找所有的当前用户的文章 #}
+                <a href="{{ url_for('.user',username=post.author.username) }}">
+                    <span class="label label-info">{{ post.author.username }}</span>
+                </a>
+                {% endif %}
+                <a href="{{ url_for('.post', id=post.id) }}">
+                    <span class="label label-default">详情</span>
+                </a>
+                <a href="{{ url_for('.post', id=post.id) }}#comments">
+                    <span class="label label-success">评论</span>
+                </a>
+                <span class="post-date ml10">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S')}}</span>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>

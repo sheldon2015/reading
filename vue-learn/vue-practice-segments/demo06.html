@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue过渡</title>
+    <style>
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 4s
+        }
+
+        .fade-enter,
+        .fade-leave-to
+        /* .fade-leave-active in below version 2.1.8 */
+
+            {
+            opacity: 0
+        }
+
+        .fade-enter-to
+        /* .fade-leave-active in below version 2.1.8 */
+
+            {
+            opacity: 0.6
+        }
+    </style>
+</head>
+
+<body>
+    <script src='./vue.js'></script>
+    <div id="demo">
+        <button v-on:click="isShow()">
+            Toggle
+        </button>
+        <transition name="fade">
+            <p v-show="show">hello</p>
+        </transition>
+    </div>
+    <script>
+        new Vue({
+            el: '#demo',
+            data: {
+                show: true
+            },
+            methods: {
+
+                isShow() {
+                    this.show = !this.show
+                }
+
+            }
+        })
+    </script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>vuex mutations</title>
+    </head>
+
+    <body>
+        <script src="./vue.js"></script>
+        <script src="./vuex.js"></script>
+        <div id="mount-point"></div>
+        <script>
+            var store = new Vuex.Store({
+                state: {
+                    count: 11111
+                },
+                mutations: {
+                    increment(state) {
+                        state.count++
+                    }
+                },
+                getters: {
+                    testGetter(state, getter) {
+                        return state.count + 10;
+                    }
+                }
+            })
+            var mapState = Vuex.mapState;
+            var mapGetters = Vuex.mapGetters;
+            var mapMutations = Vuex.mapMutations;
+            Vue.component('test', {
+                computed: {
+                    ...mapGetters({getter: 'testGetter'}),
+                    ...mapState({test: 'count'})
+                },
+                template: `
+                <div>
+                  <p>test:{{test}}</p>
+                  <p>getter:{{getter}}</p>
+                </div>
+                 `
+            })
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                store,
+                created() {
+                    console.log(this);
+                },
+                computed: {
+                    count() {
+                        return this.$store.state.count;
+                    },
+                    getter() {
+                        return this.$store.getters.testGetter
+                    }
+                },
+                methods: {
+                    ...mapMutations({handleClick: 'increment'})
+                    // handleClick: function () {     this.$store.commit('increment')     console.log(store.state.count); }
+                },
+                template: `
+                  <div>
+                          <p>
+                          {{count}}
+                          </p>
+                          <p>
+                            {{getter}}
+                          </p>
+                         <button @click='handleClick'>click</button>
+                         <test/>
+                  </div>
+            `
+            });
+        </script>
+    </body>
+
+</html>

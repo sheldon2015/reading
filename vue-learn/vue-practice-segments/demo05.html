@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue响应式原理</title>
+</head>
+
+<body>
+    <script src='./vue.js'></script>
+    <div id="container">
+        <my-define>
+            <div>slot content</div>
+        </my-define>
+    </div>
+    <script>
+        //注册组建,扩展了html元素
+        Vue.component('my-define', {
+            template: '\
+                        <div>\
+                            <div>aaaaaaa</div>\
+                        </div>\
+                        ',
+            data() {
+                return { test: 1 }
+            }
+
+        })
+        //创建根实例
+        var vm = new Vue({
+            el: '#container',
+            data() {
+                return { test: 1 }
+            }
+        })
+    </script>
+
+    <script>
+        var b = 1;
+        var obj = Object.defineProperty({}, 'test', {
+
+            get() {
+                console.log(11);
+                return b
+            },
+            set(value) {
+                console.log(22);
+                b = value
+            }
+        })
+
+        obj.test = 2;
+
+        console.log('------------------');
+        var obj2 = Object.assign({}, obj, { a: 1 })
+        obj2.test = 3;
+        obj2.a = 4;
+
+        var obj2 = Object.defineProperty({}, 'test', {
+
+            value: 11,
+            configurable: true,
+            enumerable: true
+        });
+
+        obj2 = Object.defineProperty(obj2, 'test', {
+
+            value: 13,
+
+
+        })
+
+
+
+        console.log(Object.keys(obj2))
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>vuex plugings</title>
+    </head>
+
+    <body>
+        <script src="./vue.js"></script>
+        <script src="./vuex.js"></script>
+        <div id="mount-point"></div>
+        <script>
+
+            // 自定义插件
+            const plugin = store => {
+
+                console.log('enter plugin');
+                store.subscribe(function (mutation, state) {
+
+                    console.log(mutation.type, mutation);
+
+                })
+            }
+            var store = new Vuex.Store({
+                state: {
+                    count: 11111
+                },
+                plugins: [plugin],
+                mutations: {
+                    increment(state) {
+                        state.count++
+                    }
+                },
+                getters: {
+                    testGetter(state, getter) {
+                        return state.count + 10;
+                    }
+                },
+                actions: {
+                    increaseAsync({commit}) {
+                        commit('increment');
+                        setTimeout(function () {
+                            commit('increment')
+                        }, 1000)
+                    }
+                }
+            })
+
+            var mapState = Vuex.mapState;
+            var mapGetters = Vuex.mapGetters;
+            var mapMutations = Vuex.mapMutations;
+            Vue.component('test', {
+                computed: {
+                    ...mapGetters({getter: 'testGetter'}),
+                    ...mapState({test: 'count'})
+                },
+                template: `
+                <div>
+                  <p>test:{{test}}</p>
+                  <p>getter:{{getter}}</p>
+                </div>
+                 `
+            })
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                store,
+                created() {
+                    console.log(this);
+                },
+                computed: {
+                    count() {
+                        return this.$store.state.count;
+                    },
+                    getter() {
+                        return this.$store.getters.testGetter
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.$store.dispatch('increaseAsync')
+                    }
+                },
+                template: `
+                  <div>
+                          <p>
+                          {{count}}
+                          </p>
+                          <p>
+                            {{getter}}
+                          </p>
+                         <button @click='handleClick'>click</button>
+                         <test/>
+                  </div>
+            `
+            });
+        </script>
+    </body>
+
+</html>

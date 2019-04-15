@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件</title>
+</head>
+
+<body>
+
+    <script src='./vue.js'></script>
+    <div id="container">
+        <my-define></my-define>
+        <my-define></my-define>
+        <!-- 在html中大小写不敏感 -->
+        <my-define></my-define>
+        <!--在父组件中监听自定义事件和原生事件 -->
+        <!-- 静态属性my-test -->
+        <my-define v-on:click.native="doTheThing" v-on:test='test' :test1.sync='mytest'></my-define>
+    </div>
+    <script>
+        //注册组建,扩展了html元素
+        Vue.component('my-define', {
+            props: [
+                'test1'
+            ],
+            methods: {
+                test() {
+                    console.log('sub');
+                    this.$emit('test')
+
+                    // this.test1=4444444
+                    this.$emit('update:test1', 22222222222222)
+                }
+            },
+            template: '\
+                       <div   @click= "test"   >{{test1}}</div>\
+                       '
+        })
+        //创建根实例
+        var vm = new Vue({
+            el: '#container',
+            data: {
+                'mytest': 111
+            },
+            methods: {
+                test() {
+                    console.log('super');
+                },
+                doTheThing() {
+                    console.log('native');
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

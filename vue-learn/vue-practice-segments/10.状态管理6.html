@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>非父子组建通信(运用event bus)</title>
+    </head>
+
+    <body>
+        <script src="./vue.js"></script>
+        <script src="./vuex.js"></script>
+        <div id="mount-point"></div>
+        <script>
+
+            var store = new Vuex.Store({
+                state: {
+                    count: 11111
+                },
+                mutations: {
+                    increment(state) {
+                        state.count++
+                    }
+                }
+            })
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                // REVIEW: 此处count的值为基本数据类型，store中的state变化不会通知data中的变化
+                // data: function () {
+                //     return {count: store.state.count};
+                // },
+
+                computed: {
+
+                    count() {
+                        return store.state.count;
+                    }
+
+                },
+                methods: {
+                    handleClick: function () {
+
+                        store.commit('increment')
+                        console.log(store.state.count);
+                    }
+                },
+                template: `
+            <div>
+                    <p>
+                    {{count}}
+                    </p>
+                   <button @click='handleClick'>click</button>
+            </div>
+            `
+            });
+        </script>
+    </body>
+
+</html>

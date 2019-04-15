@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>组件监听自定义事件</title>
+    </head>
+
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+
+            // todo  模版中的作用域为当前vue实例的数据作用域中，这里定义了一个沙箱
+
+            Vue.component('test', {
+                props: {
+                    'text': null
+                },
+
+                methods: {},
+
+                template: `
+                  <p @click='
+
+                  this.console.log(this);
+
+                  $emit("click",this)
+
+
+                  ' >
+                  {{text}}
+                  </p>
+                   `
+            });
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {
+                    clickHandle(e) {
+                        this.a++;
+                        console.log(e);
+                        console.log(this);
+
+                    },
+                    clickHandle2(e) {
+                        console.log('22222222222222222222222');
+                        console.log(e);
+                        console.log(this);
+                    },
+                    add() {
+                        this.a++
+                        this.a++
+                    }
+                },
+                data() {
+                    return {a: 1, checked: false, checked1: []}
+                },
+
+                // 区分表达式和字符串
+                template: `
+                <div>
+                    <test :text.sync='a'></test>
+                    <test text='aaaaaaaaaaaaaaaaaaaaaa' v-on:click='clickHandle2' ></test>
+                    <button  v-on:click='clickHandle'>click</button>
+                    <input type="checkbox" id="jack" value="Jack" v-model="checked">
+                    <label for="jack">Jack</label>
+                    <br>
+                    <span>Checked names: {{ checked }}</span>
+                    <hr />
+                    <input type="checkbox" id="jack1" value="Jack" v-model="checked1">
+                    <label for="jack">Jack</label>
+                    <br>
+                    <span>Checked names: {{ checked1 }}</span>
+                </div>
+                `
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>vuex state and 异步commit mutions</title>
+    </head>
+
+    <body>
+        <script src="./vue.js"></script>
+        <script src="./vuex.js"></script>
+        <div id="mount-point"></div>
+        <script>
+
+            var test1 = {
+                state: {
+                    count: 11111
+                },
+                mutations: {
+                    increment(state) {
+                        state.count++;
+                        console.log('test1');
+                    }
+                },
+                actions: {
+                    increaseAsync({commit}) {
+                        return new Promise(function (resolve, reject) {
+                            setTimeout(function () {
+                                commit('increment');
+                                resolve(111111);
+                            }, 1000)
+                        })
+                    }
+                }
+            }
+            var test2 = {
+                state: {
+                    count: 11111
+                },
+                mutations: {
+                    increment(state) {
+                        state.count++
+                        console.log('test2');
+                    }
+                },
+                actions: {
+                    increaseAsync({commit}) {
+                        return new Promise(function (resolve, reject) {
+                            setTimeout(function () {
+                                commit('increment');
+                                resolve(111111);
+                            }, 1000)
+
+                        })
+                    }
+                }
+            }
+            var store = new Vuex.Store({
+                modules: {
+                    test: test1,
+                    test2: test2
+                }
+            })
+
+            var mapState = Vuex.mapState;
+            Vue.component('test', {
+                // computed: {
+                //
+                //     test() {         console.log(this);         return this.$store.state.count     } },
+
+                computed: mapState({
+                    test: state => state.test.count
+                }),
+                template: `
+                    <p>test:{{test}}</p>
+                 `
+            })
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                store,
+
+                created() {
+                    console.log(this);
+                },
+                computed: {
+                    count() {
+                        return this.$store.state.test.count;
+                    }
+                },
+                methods: {
+                    handleClick: function () {
+                        this.$store.commit('increment')
+                        this.$store.dispatch('increaseAsync').then(function (resolve) {
+
+                            console.log(resolve)
+                        })
+                        console.log(store.state.count);
+                    }
+                },
+                template: `
+                  <div>
+                          <p>
+                          {{count}}
+                          </p>
+                         <button @click='handleClick'>click</button>
+                         <test/>
+                  </div>
+            `
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>响应原理</title>
+</head>
+
+<body>
+    <script src='./vue.js'></script>
+    <div id="mount-point">
+    </div>
+    <script>
+    //构造器
+    var vm = new Vue({
+        el: '#mount-point',
+        methods: {
+            handleClick: function() {
+               Vue.set(this.name,0,222222)
+               this.$set(this.name,1,111111);
+               //非响应属性
+               /**
+               Avoid adding reactive properties to a Vue instance or its root $data at runtime - declare it upfront in the data option.
+               */
+               this.$set(this,'test',1)
+            }
+        },
+        template: `
+        <div>
+           <p>
+            {{name[0]}}
+            <br />
+            {{name[1]}}
+            </p>
+            <p>
+            <button @click=handleClick>click</button>
+            </p>
+        </div>
+            `,
+        data: function() {
+            return {
+                name: ['Walter', 'yao']
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

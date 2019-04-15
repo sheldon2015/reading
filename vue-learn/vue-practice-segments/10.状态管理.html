@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>状态管理</title>
+</head>
+
+<body>
+    <script src="./vue.js">
+    </script>
+    <div id="mount-point">
+    </div>
+    <div id="mount-point2">
+    </div>
+    <script>
+        var store = {
+            debug: true,
+            state: {
+                message: "Hello11111111!"
+            },
+            setMessageAction(newValue) {
+                if (this.debug)
+                    console.log("setMessageAction triggered with", newValue);
+                this.state.message = newValue;
+                console.log(this.state);
+            },
+            clearMessageAction() {
+                if (this.debug) console.log("clearMessageAction triggered");
+                this.state.message = "";
+                console.log(this.state);
+            }
+        };
+        //构造器
+        var vm = new Vue({
+            el: "#mount-point",
+            data: function () {
+                return {
+                    name: ["Walter", "yao"],
+                    share: store.state
+                };
+            },
+            methods: {
+                handleClick: function () {
+                    store.setMessageAction("change1");
+
+                    console.log(this.share);
+                }
+            },
+            template: `
+            <div>
+                   <p>
+                    {{name[0]}}
+                    <br />
+                    {{name[1]}}
+                    </p>
+                    <p>
+                        <label for=""> 共享的状态</label>
+                        <span>{{share.message}}</span>
+                    </p>
+                    <button @click=handleClick>click</button>
+            </div>
+            `
+        });
+        var vm2 = new Vue({
+            el: "#mount-point2",
+            data: function () {
+                return {
+                    name: ["Walter", "yao"],
+                    share: store.state
+                };
+            },
+            methods: {
+                handleClick: function () {
+                    store.setMessageAction("change2");
+
+                    console.log(this.share);
+                }
+            },
+            template: `
+            <div>
+                   <p>
+                        {{name[0]}}
+                        <br />
+                        {{name[1]}}
+                    </p>
+                     <p>
+                        <label for=""> 共享的状态</label>
+                        <span>{{share.message}}</span>
+                    </p>
+                     <button @click=handleClick>click</button>
+            </div>
+            `
+        });
+    </script>
+</body>
+
+</html>

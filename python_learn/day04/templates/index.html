@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test form validate</title>
+</head>
+
+<body>
+    {{name}}
+    <form method="POST" action="">
+        <div>
+            {{ form.hidden_tag() }}
+        </div>
+        <div>
+            {{ form.name.label }} {{ form.name(id='my-text-field') }}
+        </div>
+        {{ form.submit() }}
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>异步更新</title>
+    </head>
+
+    <body>
+        <script src="./vue.js"></script>
+        <div id="mount-point">
+            <script>
+                //构造器
+                var vm = new Vue({
+                    el: "#mount-point",
+                    data: function () {
+                        return {
+                            name: ["Walter", "yao"]
+                        };
+                    },
+                    methods: {
+                        handleClick: function () {
+                            //数据更新完毕，不会立即更新dom
+                            this.$set(this.name, 1, 111111);
+                            let i = 0;
+                            while (i < 100) {
+                                i++;
+                            }
+                            this.$set(this.name, 1, "change1");
+                            console.log(this.$el.textContent);
+                            while (i < 1000) {
+                                i++;
+                            }
+                            this.$set(this.name, 1, "change2");
+                            console.log(this.$el.textContent);
+                            while (i < 10000) {
+                                i++;
+                            }
+                            this.$set(this.name, 1, "change3");
+                            console.log(this.$el.textContent);
+                            this.$nextTick(function () {
+                                //数据更新完毕，在这里可以操作dom
+                                console.log(this.$el.textContent);
+                                console.log('可以操作dom')
+                            });
+                        }
+                    },
+                    template: `
+            <div>
+               <p>
+                {{name[0]}}
+                <br />
+                  {{name[1]}}
+                </p>
+                <p>
+                <button @click=handleClick>click</button>
+                </p>
+            </div>
+            `
+                });
+            </script>
+        </div>
+    </body>
+
+</html>

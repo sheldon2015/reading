@@ -1,0 +1,8 @@
+cd day03 &^
+::进入虚拟环境
+pipenv shell &^
+set FLASK_APP=flaskApp.py  &^
+set FLASK_ENV=development &^
+::开启debug模式可以reload服务器当修改资源的时候能，而且能输出错误栈信息
+set FLASK_DEBUG=1 &^
+flask run

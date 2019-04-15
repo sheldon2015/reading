@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+</head>
+
+<body>
+    <!-- 
+        用户输入名字后提交表单，然后点击浏览器的刷
+        新按钮，会看到一个莫名其妙的警告，要求在再次提交表单之前进行确认。之所以出现这
+        种情况，是因为刷新页面时浏览器会重新发送之前已经发送过的最后一个请求。如果这个
+        请求是一个包含表单数据的 POST 请求，刷新页面后会再次提交表单
+     -->
+    <div>
+        {{name}}
+    </div>
+
+    <div>
+        <a id='test' href="{{url_for('get_user', name=name)}}">get_user</a>
+    </div>
+    <div>
+        <a href="{{url_for('name', name=name)}}">redir</a>
+    </div>
+    <div>
+        <a href="{{url_for('get_user', name=name)}}">redir/****</a>
+    </div>
+    <form action="test" method="post">
+        <label for="name">name:</label>
+        <input id='name' name='name' type="text">
+        <button type="submit">submit</button>
+    </form>
+</body>
+
+
+</html>

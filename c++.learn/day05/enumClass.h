@@ -1,0 +1,1 @@
+enum class FAMILY { FATHER, MOTHER, SON, DAUGHTER };

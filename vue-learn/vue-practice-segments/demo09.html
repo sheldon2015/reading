@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>响应原理</title>
+    </head>
+
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {
+                    changeType() {
+                        this.isPassword = !this.isPassword;
+                        this.isPassword
+                            ? this["movex"] = {
+                                height: "400px"
+                            }
+                            : this["movex"] = {
+                                height: "100px"
+                            };
+
+                    }
+                },
+                template: `
+                 <div>
+                    <div  ref='count'  :style='[move,movex]'> {{count}}</div>
+                    <div  v-if='isPassword'>
+                        <input  v-model='m' type="password" />
+                        <button @click='changeType'>click</button>
+                    </div>
+                    <div  v-else>
+                        <input  v-model='m' type="text" />
+                        <button @click='changeType'>click</button>
+                    </div>
+                </div>
+                `,
+                data: function () {
+                    return {
+                        m: 1,
+                        isPassword: false,
+                        count: 1,
+                        movex: {
+                            height: "10px"
+                        }
+                    };
+                },
+                created() {},
+                computed: {
+                    move() {
+                        return {transform: `translateX(${this.m}px)`, transition: "all 1s"};
+                    }
+                },
+                mounted: function () {
+                    var me = this;
+                    setInterval(function () {
+                        me.count++;
+                    }, 10);
+
+                    console.log(this);
+
+                    console.log(this.$refs.count.textContent);
+
+                    Vue.nextTick(function () {
+
+                        console.log(this);
+
+                    })
+                }
+            });
+        </script>
+    </body>
+
+</html>

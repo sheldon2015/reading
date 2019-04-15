@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>组件监听自定义事件 以及原生dom原生事件</title>
+    </head>
+    <!--TODO 组件监听自定义事件 以及原生dom没事件 原生元素:只能监听原生事件 自定义组件:可以监听原生事件，也可监听dom事件（用修饰符.native区分） -->
+
+    <body>
+        <script src='./vue.js'></script>
+        <div id="mount-point"></div>
+        <script>
+
+            Vue.component('test', {
+                props: {
+                    'text': null
+                },
+
+                methods: {
+                    click11() {
+                        this.$emit('click', 1111111111111111111)
+                    }
+                },
+
+                template: `
+                  <p @click='click11' >
+                  {{text}}
+                  </p>
+                   `
+            });
+            //构造器
+            var vm = new Vue({
+                el: "#mount-point",
+                methods: {
+                    clickHandle(e) {
+                        this.a++;
+                        console.log(e);
+                        console.log(this);
+
+                    },
+                    clickHandle2(e) {
+                        console.log('22222222222222222222222');
+                        console.log(e);
+                        console.log(this);
+                    },
+                    add() {
+
+                        this.a++
+                        this.a++
+                    }
+                },
+                data() {
+                    return {a: 1}
+                },
+                // 区分表达式和字符串
+                template: `
+                <div>
+                    <test :text.sync='a'></test>
+                    <test text='aaaaaaaaaaaaaaaaaaaaaa' v-on:click='clickHandle2' ></test>
+                    <button  v-on:click='clickHandle'>click</button>
+                </div>
+                `
+            });
+        </script>
+    </body>
+
+</html>
