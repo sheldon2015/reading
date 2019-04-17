@@ -1,5 +1,6 @@
 **/include/**
 **/__pycache__/**
 **/.venv/**
-**/.class
+**/*.class
+
 
